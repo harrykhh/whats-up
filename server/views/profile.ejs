@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+    <head>
+		<% include partials/head.ejs %>
+    </head>
+    <body class="skin-black">
+        <!-- header logo: style can be found in header.less -->
+		<% include partials/header.ejs %>
+        <div class="wrapper row-offcanvas row-offcanvas-left">
+		<!-- Left side column. contains the logo and sidebar -->
+			<% include partials/sidebar.ejs %>
+		<!-- Right side column. Contains the navbar and content of the page -->
+            <aside class="right-side">                
+                <!-- Content Header (Page header) -->
+                <section class="content-header">
+                    <h1>
+                       Profile
+					   <small>Edit profile</small>
+                    </h1>
+                    <ol class="breadcrumb">
+                        <li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
+                        <li class="active"><i class="fa fa-user"></i> Profile</li>
+                    </ol>
+                </section>
+
+                <!-- Main content -->
+                <section class="content">
+					<div class="row">
+						<div class="col-md-6 col-centered">
+						<% if (typeof message != "undefined"){ %>
+							<div class="alert alert-<%= message.type %>">
+								<i class="fa <%= message.icon %>"></i>
+								<b><%= message.content %></b>
+							</div>
+						<% } %>
+							<div class="box box-info">
+								<div class="box-header">
+									<h3 class="box-title">Profile Details</h3>
+								</div>
+								<div class="box-body">
+									<% if (typeof user.gravatar != "undefined"){ %>
+										<div class="form-group">
+											<label>Current gravatar URL :</label> 	<%= user.gravatar %>
+											<p>Leave email address empty to remove gravatar.</p>
+										</div>
+									<% } %>
+									<form id="form" action="/profile" method="post">
+										<div class="form-group">
+                                            <label for="gravatar">Gravatar email address</label>
+											<input type="email" class="form-control" name="gravatar" placeholder="Enter gravatar email">
+										</div>
+										<div class="form-group">
+											<button type="submit" class="btn bg-olive btn-block">Save</button>
+										</div>
+									</form>
+								</div><!-- /.box-body -->
+							</div>
+						</div>
+					</div>
+				</section><!-- /.content -->
+            </aside><!-- /.right-side -->
+        </div><!-- ./wrapper -->
+		<% include partials/footer.ejs %>
+		<% include partials/jsdefaults.ejs %>
+		<script src='/bower_components/socket.io-client/socket.io.js'></script>
+		<script src='/js/socket.js'></script>
+		<script type='text/javascript'>
+			$(document).ready(function () {
+				$('#form').bootstrapValidator({
+					feedbackIcons: {
+						valid: 'glyphicon glyphicon-ok',
+						invalid: 'glyphicon glyphicon-remove',
+						validating: 'glyphicon glyphicon-refresh'
+					},
+					fields: {
+						email: {
+							validators: {
+								emailAddress: {
+									message: 'The value is not a valid email address'
+								}
+							}
+						}
+					}
+				});
+			});
+		</script>
+    </body>
+</html>

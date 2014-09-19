@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+	<head><% include partials/head.ejs %></head>
+	<body class="skin-black">
+		<!-- header logo: style can be found in header.less -->
+		<% include partials/header.ejs %>
+		<div class="wrapper row-offcanvas row-offcanvas-left">
+			<!-- Left side column. contains the logo and sidebar -->
+			<% include partials/sidebar.ejs %>
+			<!-- Right side column. Contains the navbar and content of the page -->
+			<aside class="right-side">
+				<!-- Content Header (Page header) -->
+				<section class="content-header">
+					<h1>
+						<%= title %>
+						<a href="/graph/<%= title %>"><small>Detail Stats</small></a>
+					</h1>
+					<ol class="breadcrumb">
+						<li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
+						<li class="active"><i class="fa fa-database"></i> <%= title %></li>
+					</ol>
+				</section>
+
+				<!-- Main content -->
+				<section class="content">
+					<!-- Small boxes (Stat box) -->
+					<div class="row col-centered">
+						<div class="col-lg-3"></div>
+						<div class="col-lg-3 col-md-6 col-sm-6 col-xs-4" style="text-align: center; margin-left: auto; margin-right: auto;">
+							<i id="check" class="fa fa-question-circle" style="color: #f39c12; font-size: 10em;"></i>
+						</div>
+						<div id="gauge" class="col-lg-3 col-md-6 col-sm-6 col-xs-8" style="height: 150px; text-align: center; margin-left: auto; margin-right: auto;"></div>
+						<div class="col-lg-3"></div>
+					</div><!-- /.row -->
+					<div class="row">
+						</br>
+						<div class="col-lg-8 col-md-12 col-xs-12 col-sm-12 col-centered">
+							<div class="box box-warning">
+								<div class="box-body">
+									<div class="row">
+										<% data.forEach(function(item) { %>
+											<div class="col-lg-3 col-md-4 col-xs-6">
+												<!-- small box -->
+												<div class="small-box bg-green" id="<%=item.id %>">
+													<div class="inner">
+														<h4>
+															<%=item.name %>
+														</h4>
+														<p>
+															<%=item.id %>
+														</p>
+													</div>
+													<div class="icon">
+														<i class="ion ion-stats-bars"></i>
+													</div>
+													<a href="/graph/<%= title %>/<%=item.id %>/" class="small-box-footer">
+														Detailed Stats <i class="fa fa-arrow-circle-right"></i>
+													</a>
+												</div>
+											</div><!-- ./col -->
+										<% }); %>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div><!-- /.row -->
+				</section><!-- /.content -->
+
+			</aside><!-- /.right-side -->
+		</div><!-- ./wrapper -->
+
+		<% include partials/footer.ejs %>
+		<% include partials/jsdefaults.ejs %>
+		<script type="text/javascript">
+			$("#" + "<%= title %>".toLowerCase()).parent().attr('class', 'treeview active');
+			$("#" + "<%= title %>".toLowerCase()).parent().parent().parent().attr('class', 'treeview active');
+			var gauge = new JustGage({
+				id: "gauge",
+				value: 0,
+				min: 0,
+				max: 600,
+				title: "Response Time",
+				label: "ms"
+			});
+		</script>
+		<script src='/bower_components/socket.io-client/socket.io.js'></script>
+		<script src='/js/socket.js'></script>
+		<script type="text/javascript">
+			socket.on('connect', function() {
+				socket.emit('join room', '<%= title %>');
+			});
+			socket.on('database status', function(data) {
+				if (data.<%= title %> === "0"){
+					$('#check').attr('class', 'fa fa-check-circle');
+					$('#check').css('color', '#00a65a');
+					$('.box-warning').attr('class', 'box box-success');
+				}
+				else{
+					$('#check').attr('class', 'fa fa-times-circle');
+					$('#check').css('color', '#f56954');
+					$('.box-warning').attr('class', 'box box-danger');
+				}
+			});
+			socket.on('<%= title %>', function(data) {
+				var sum = 0;
+				for(var i = 0; i < data.nodes.length; i++){
+					sum += parseInt(data.nodes[i].ResponseTime, 10); //don't forget to add the base
+				}
+				var avg = sum/data.nodes.length;
+				gauge.refresh(avg);
+			});
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,39 @@
+.navbar-nav > .user-menu > .dropdown-menu > li.user-header {
+	height: 145px;
+}
+.navbar-nav > .user-menu > .dropdown-menu > li.user-body {
+	padding: 8px;
+}
+.navbar-nav > .user-menu > .dropdown-menu > form >li.user-header {
+	height: 28px;
+	padding: 3px;
+	text-align: center;
+}
+.navbar-nav > .user-menu > .dropdown-menu > form > li.user-body {
+	padding: 8px;
+	border-bottom: 1px solid #f4f4f4;
+	border-top: 1px solid #dddddd;
+}
+.navbar-nav > .user-menu > .dropdown-menu > form > li.user-footer > div > a{
+	color: #3c8dbc;
+	text-align: center;
+}
+.navbar-nav > .user-menu > .dropdown-menu > form > li.user-footer {
+	background-color: #f9f9f9;
+	padding: 10px;
+	height: 150px;
+}
+.green{
+	color : green;
+}
+.red{
+	color : red;
+}
+.col-centered{
+    float: none;
+    margin: 0 auto;
+}
+
+footer {
+	margin: 50px 0;
+}

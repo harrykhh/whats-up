@@ -1,0 +1,31 @@
+	var socket = io();
+	socket.on('connect', function() {
+		socket.emit('join room', 'database status');
+	});
+	socket.on('database status', function(data) {
+		if (data.DB2 === "0"){
+			$('#db2').find('.fa-question-circle').css('color', '#00a65a');
+			$('#db2').find('.fa-question-circle').attr('class', 'fa fa-check-circle pull-right');
+		}
+		else{
+			$('#db2').find('.fa-question-circle').css('color', '#f56954');		
+			$('#db2').find('.fa-question-circle').attr('class', 'fa fa-times-circle pull-right');
+		}
+		if (data.Oracle === "0"){
+			$('#oracle').find('.fa-question-circle').css('color', '#00a65a');
+			$('#oracle').find('.fa-question-circle').attr('class', 'fa fa-check-circle pull-right');
+		}
+		else{
+			$('#oracle').find('.fa-question-circle').css('color', '#f56954');
+			$('#oracle').find('.fa-question-circle').attr('class', 'fa fa-times-circle pull-right');
+		}
+		if (data.Teradata === "0"){
+			$('#teradata').find('.fa-question-circle').css('color', '#00a65a');
+			$('#teradata').find('.fa-question-circle').attr('class', 'fa fa-check-circle pull-right');
+		}
+		else{
+			$('#teradata').find('.fa-question-circle').css('color', '#f56954');		
+			$('#teradata').find('.fa-question-circle').attr('class', 'fa fa-times-circle pull-right');
+		}
+	});
+	socket.on('error', function() { console.error(arguments) });

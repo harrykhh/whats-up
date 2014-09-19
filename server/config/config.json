@@ -1,0 +1,17 @@
+{
+	"version" : "0.0.1a",
+	"redis_port" : "6379",
+	"redis_url" : "localhost",
+	"mongodb_url" : "mongodb://localhost/stats",
+	"mongodb_user" : "mongouser",
+	"mongodb_password" : "password",
+	"LDAPPassportConfig" : {
+		"server" : {
+			"url": "LDAP://localhost",
+			"adminDn": "network\\admin",
+			"adminPassword" : "password",
+			"searchBase" : "CN=Users,DC=com",
+			"searchFilter" : "(sAMAccountName={{username}})"
+		}
+	}
+}

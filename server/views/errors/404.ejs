@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+		<% include ../partials/head.ejs %>
+    </head>
+    <body class="skin-black">
+        <!-- header logo: style can be found in header.less -->
+		<% include ../partials/header.ejs %>
+        <div class="wrapper row-offcanvas row-offcanvas-left">
+		<!-- Left side column. contains the logo and sidebar -->
+			<% include ../partials/sidebar.ejs %>
+		<!-- Right side column. Contains the navbar and content of the page -->
+            <aside class="right-side">                
+                <!-- Content Header (Page header) -->
+                <section class="content-header">
+                    <h1>
+                        404 Error Page
+                    </h1>
+                    <ol class="breadcrumb">
+                        <li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
+                        <li class="active"><i class="fa fa-exclamation-triangle"></i> 404 Error</li>
+                    </ol>
+                </section>
+
+                <!-- Main content -->
+                <section class="content">
+                 
+                    <div class="error-page">
+                        <h2 class="headline text-info"> 404</h2>
+                        <div class="error-content">
+                            <h3><i class="fa fa-warning text-yellow"></i> Oops! Page not found.</h3>
+                            <p>
+                                We could not find the page you were looking for. 
+                                Meanwhile, you may <a href='/'>return to dashboard</a> .
+                            </p>
+                        </div><!-- /.error-content -->
+                    </div><!-- /.error-page -->
+
+                </section><!-- /.content -->
+            </aside><!-- /.right-side -->
+        </div><!-- ./wrapper -->
+
+		<% include ../partials/footer.ejs %>
+		<% include ../partials/jsdefaults.ejs %>
+		<script src='/bower_components/socket.io-client/socket.io.js'></script>
+		<script src='/js/socket.js'></script>
+    </body>
+</html>

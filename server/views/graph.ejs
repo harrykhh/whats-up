@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+	<head><% include partials/head.ejs %></head>
+	<body class="skin-black">
+		<!-- header logo: style can be found in header.less -->
+		<% include partials/header.ejs %>
+		<div class="wrapper row-offcanvas row-offcanvas-left">
+			<!-- Left side column. contains the logo and sidebar -->
+			<% include partials/sidebar.ejs %>
+			<!-- Right side column. Contains the navbar and content of the page -->
+			<aside class="right-side">
+				<!-- Content Header (Page header) -->
+				<section class="content-header">
+					<h1>
+						<%= title %>
+						<small>Graph</small>
+					</h1>
+					<ol class="breadcrumb">
+						<li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
+						<% if (typeof dbtype != "undefined") { %>
+							<li><a href="/database/<%= dbtype %>"><i class="fa fa-database"></i> <%= dbtype %></a></li>
+						<% } %>
+						<li class="active"><i class="fa fa-bar-chart-o"></i> <%= title %></li>
+					</ol>
+				</section>
+
+				<!-- Main content -->
+				<section class="content">
+					<!-- Small boxes (Stat box) -->
+					<div class="row col-centered">
+						<div class="col-lg-3"></div>
+						<div class="col-lg-3 col-md-6 col-sm-6 col-xs-4" style="text-align: center; margin-left: auto; margin-right: auto;">
+							<i id="check" class="fa fa-question-circle" style="color: #f39c12; font-size: 10em;"></i>
+						</div>
+						<div id="gauge" class="col-lg-3 col-md-6 col-sm-6 col-xs-8" style="height: 150px; text-align: center; margin-left: auto; margin-right: auto;"></div>
+						<div class="col-lg-3">
+							<div class="btn-group" id="time" data-toggle="buttons">
+							  <label class="btn active">
+							    <input type="radio" class="toggle" value="2" checked>15 Minutes
+							  </label>
+							  <label class="btn">
+							    <input type="radio" class="toggle" value="3">3 Hours
+							  </label>
+							  <label class="btn">
+							    <input type="radio" class="toggle" value="168">7 Days
+							  </label>
+							</div>
+						</div>
+					</div><!-- /.row -->
+					<div class="row">
+						</br>
+						<div class="col-lg-10 col-md-12 col-xs-12 col-sm-12 col-centered">
+							<div class="box box-warning">
+								<div class="box-body">
+									<div class="row">
+										<div class="col-lg-12 col-xs-12">
+											<div id="graph"></div>
+											</br>
+											<div id="slider"></div>
+										</div><!-- ./col -->
+									</div>
+								</div>
+							</div>
+						</div>
+					</div><!-- /.row -->
+				</section><!-- /.content -->
+
+			</aside><!-- /.right-side -->
+		</div><!-- ./wrapper -->
+
+		<% include partials/footer.ejs %>
+		<% include partials/jsdefaults.ejs %>
+		<script type="text/javascript">
+			function getRandomColor() {
+				var letters = '0123456789ABCDEF'.split('');
+				var color = '#';
+				for (var i = 0; i < 6; i++ ) {
+					color += letters[Math.floor(Math.random() * 16)];
+				}
+				return color;
+			}
+			var data = <%- JSON.stringify(data) %>;
+			var series = [];
+			if(data.length > 30){
+				data.forEach(function(e) {
+					e.x = Math.round(new Date(e.x)/1000);
+				});
+				series.push({
+						color: 'steelblue',
+						data:  data,
+						name: '<%= title %>'
+				});
+			}else{
+				data.forEach(function(e) {
+					e.forEach(function(d) {
+						d.x = Math.round(new Date(d.x)/1000);
+					});
+					series.push({
+							color: getRandomColor(),
+							data:  e,
+							name: e[0].Name
+					});
+				});
+			}
+			var graph = new Rickshaw.Graph({
+				element: document.getElementById("graph"),
+				width: window.innerWidth * 0.85,
+				height: window.innerHeight * 0.75,
+				renderer: 'lineplot',
+				stroke: true,
+				series: series
+			});
+			graph.render();
+
+			var xAxis = new Rickshaw.Graph.Axis.Time({
+				graph: graph,
+				timeFixture: new Rickshaw.Fixtures.Time.Local()
+			});
+
+			xAxis.render();
+
+			var yAxis = new Rickshaw.Graph.Axis.Y({
+				graph: graph
+			});
+			yAxis.render();
+
+			var hoverDetail = new Rickshaw.Graph.HoverDetail( {
+				graph: graph,
+				formatter: function(series, x, y) {
+					var date = '<span class="date">' + new Date(x * 1000).toString() + '</span>';
+					var swatch = '<span class="detail_swatch" style="background-color: ' + series.color + '"></span>';
+					var content = swatch + series.name + "<br> Response Time: " + parseInt(y) + ' ms<br>' + date;
+					return content;
+				},
+				xFormatter: function(x) {
+					return new Date(x * 1000).toString();
+				}
+			});
+
+			var slider = new Rickshaw.Graph.RangeSlider.Preview({
+				graph: graph,
+				element: document.getElementById('slider')
+			});
+
+			var resize = function() {
+				graph.configure({
+					width: $('.box-body').children().children().innerWidth() - 30,
+					height: window.innerHeight * 0.75
+				});
+				graph.render();
+				yAxis.render();
+			}
+
+			window.addEventListener('resize', resize);
+			resize();
+
+			$("#" + "<%= title %>".toLowerCase()).parent().attr('class', 'treeview active');
+			$("#" + "<%= title %>".toLowerCase()).parent().parent().parent().attr('class', 'treeview active');
+			var gauge = new JustGage({
+				id: "gauge",
+				value: 0,
+				min: 0,
+				max: 600,
+				title: "Response Time",
+				label: "ms"
+			});
+		</script>
+		<script src='/bower_components/socket.io-client/socket.io.js'></script>
+		<script src='/js/socket.js'></script>
+		<script type="text/javascript">
+			socket.on('connect', function() {
+			<% if (typeof dbtype != "undefined"){ %>
+				socket.emit('join room', '<%= dbtype %>');
+			<% } else { %>
+				socket.emit('join room', '<%= title %>');
+			<% } %>
+			});
+			<% if (typeof dbtype != "undefined"){ %>
+				socket.on('<%= dbtype %>', function(data) {
+			<% } else { %>
+				socket.on('<%= title %>', function(data) {
+			<% } %>
+			<% if (title === "Internet"){ %>
+				if (typeof data != "undefined"){
+					$('#check').attr('class', 'fa fa-check-circle');
+					$('#check').css('color', '#00a65a');
+					$('.box-warning').attr('class', 'box box-success');
+				}
+				else{
+					$('#check').attr('class', 'fa fa-times-circle');
+					$('#check').css('color', '#f56954');
+					$('.box-warning').attr('class', 'box box-danger');
+				}
+				var avg = data;
+			<% } else { %>
+					var sum = 0;
+					for(var i = 0; i < data.nodes.length; i++){
+						sum += parseInt(data.nodes[i].ResponseTime, 10); //don't forget to add the base
+					}
+					var avg = sum/data.nodes.length;
+			<% } %>
+			<% if (typeof dbtype != "undefined"){ %>
+					for(var i = 0; i < data.nodes.length; i++){
+						if (data.nodes[i].Name === '<%= title %>')
+							avg = parseInt(data.nodes[i].ResponseTime, 10); //don't forget to add the badbtypese
+					}
+			<% } %>
+					gauge.refresh(avg);
+					$.ajax({
+					    url : "/getgraphdata",
+					    type: "get",
+					    data : {
+								Hours: $('#time label.active input').val(),
+								Node: '<%= title %>',
+								<% if (typeof dbtype != "undefined"){ %>
+									DBType: '<%= dbtype %>'
+								<% } else { %>
+									DBType: '<%= title %>'
+								<% } %>
+
+							},
+					    success: function(result, textStatus, jqXHR)
+					    {
+								if(result.length > 30){
+									result.forEach(function(e) {
+										e.x = Math.round(new Date(e.x)/1000);
+									});
+									series[0].data = result;
+								}else{
+									result.forEach(function(e) {
+										e.forEach(function(d) {
+											d.x = Math.round(new Date(d.x)/1000);
+										});
+										series.forEach(function(f) {
+											if (f.name == e[0].Name){
+												f.data = e;
+											}
+										});
+									});
+								}
+								graph.update();
+					    }
+					});
+			});
+			<% if (title != "Internet"){ %>
+			socket.on('database status', function(data) {
+			<%if (typeof dbtype != "undefined"){ %>
+				if (data.<%= dbtype %> === "0"){
+			<% } else { %>
+				if (data.<%= title %> === "0"){
+			<% } %>
+					$('#check').attr('class', 'fa fa-check-circle');
+					$('#check').css('color', '#00a65a');
+					$('.box-warning').attr('class', 'box box-success');
+				}
+				else{
+					$('#check').attr('class', 'fa fa-times-circle');
+					$('#check').css('color', '#f56954');
+					$('.box-warning').attr('class', 'box box-danger');
+				}
+			});
+			<% } %>
+		</script>
+	</body>
+
+</html>

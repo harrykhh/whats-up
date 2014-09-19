@@ -1,0 +1,45 @@
+
+<aside class="left-side sidebar-offcanvas">
+	<!-- sidebar: style can be found in sidebar.less -->
+	<section class="sidebar">
+		<!-- Sidebar user panel -->
+		<div class="user-panel">
+			<div class="pull-left image">
+				<% if(typeof user != "undefined" && typeof user.gravatar != "undefined" && user.gravatar != ""){ %>
+					<img src="<%=user.gravatar%>" class="img-circle" alt="User Image" />
+				<% } else{%>
+					<img src="/img/default.png" class="img-circle" alt="User Image" />
+				<% } %>
+			</div>
+			<div class="pull-left info">
+				<% if(typeof user != "undefined"){ %>
+					<p>Hello, <%=user.firstName%>!</p>
+				<% } else{%>
+					<p>Hello, Guest!</p>
+				<% } %>
+				<a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+			</div>
+		</div>
+		<!-- sidebar menu: : style can be found in sidebar.less -->
+		<ul class="sidebar-menu">
+			<li>
+				<a href="/">
+					<i class="fa fa-dashboard"></i> <span>Dashboard</span>
+				</a>
+			</li>
+			<li class="treeview">
+				<a href="#">
+					<i class="fa fa-database"></i>
+					<span>Databases</span>
+					<i class="fa fa-angle-left pull-right"></i>
+				</a>
+				<ul class="treeview-menu">
+					<li><a href="/database/DB2" id="db2"><i class="fa fa-angle-double-right"></i> DB2<i class="fa fa-question-circle pull-right" style="color: orange;"></i></a></li>
+					<li><a href="/database/Oracle" id="oracle"><i class="fa fa-angle-double-right"></i> Oracle<i class="fa fa-question-circle pull-right" style="color: orange;"></i></a></li>
+					<li><a href="/database/Teradata" id="teradata"><i class="fa fa-angle-double-right"></i> Teradata<i class="fa fa-question-circle pull-right" style="color: orange;"></i></a></li>
+				</ul>
+			</li>
+		</ul>
+	</section>
+	<!-- /.sidebar -->
+</aside>
