@@ -168,44 +168,7 @@
 		<script src='/bower_components/socket.io-client/socket.io.js'></script>
 		<script src='/js/socket.js'></script>
 		<script type="text/javascript">
-			socket.on('connect', function() {
-			<% if (typeof dbtype != "undefined"){ %>
-				socket.emit('join room', '<%= dbtype %>');
-			<% } else { %>
-				socket.emit('join room', '<%= title %>');
-			<% } %>
-			});
-			<% if (typeof dbtype != "undefined"){ %>
-				socket.on('<%= dbtype %>', function(data) {
-			<% } else { %>
-				socket.on('<%= title %>', function(data) {
-			<% } %>
-			<% if (title === "Internet"){ %>
-				if (typeof data != "undefined"){
-					$('#check').attr('class', 'fa fa-check-circle');
-					$('#check').css('color', '#00a65a');
-					$('.box-warning').attr('class', 'box box-success');
-				}
-				else{
-					$('#check').attr('class', 'fa fa-times-circle');
-					$('#check').css('color', '#f56954');
-					$('.box-warning').attr('class', 'box box-danger');
-				}
-				var avg = data;
-			<% } else { %>
-					var sum = 0;
-					for(var i = 0; i < data.nodes.length; i++){
-						sum += parseInt(data.nodes[i].ResponseTime, 10); //don't forget to add the base
-					}
-					var avg = sum/data.nodes.length;
-			<% } %>
-			<% if (typeof dbtype != "undefined"){ %>
-					for(var i = 0; i < data.nodes.length; i++){
-						if (data.nodes[i].Name === '<%= title %>')
-							avg = parseInt(data.nodes[i].ResponseTime, 10); //don't forget to add the badbtypese
-					}
-			<% } %>
-					gauge.refresh(avg);
+			var updategraph = function(){
 					$.ajax({
 					    url : "/getgraphdata",
 					    type: "get",
@@ -241,6 +204,50 @@
 								graph.update();
 					    }
 					});
+			}
+			var time = $('#time label.active input').val();
+			$('#time').on('click',function(e){
+				updategraph();
+			});
+			socket.on('connect', function() {
+			<% if (typeof dbtype != "undefined"){ %>
+				socket.emit('join room', '<%= dbtype %>');
+			<% } else { %>
+				socket.emit('join room', '<%= title %>');
+			<% } %>
+			});
+			<% if (typeof dbtype != "undefined"){ %>
+				socket.on('<%= dbtype %>', function(data) {
+			<% } else { %>
+				socket.on('<%= title %>', function(data) {
+			<% } %>
+				updategraph();
+			<% if (title === "Internet"){ %>
+				if (typeof data != "undefined"){
+					$('#check').attr('class', 'fa fa-check-circle');
+					$('#check').css('color', '#00a65a');
+					$('.box-warning').attr('class', 'box box-success');
+				}
+				else{
+					$('#check').attr('class', 'fa fa-times-circle');
+					$('#check').css('color', '#f56954');
+					$('.box-warning').attr('class', 'box box-danger');
+				}
+				var avg = data;
+			<% } else { %>
+					var sum = 0;
+					for(var i = 0; i < data.nodes.length; i++){
+						sum += parseInt(data.nodes[i].ResponseTime, 10); //don't forget to add the base
+					}
+					var avg = sum/data.nodes.length;
+			<% } %>
+			<% if (typeof dbtype != "undefined"){ %>
+					for(var i = 0; i < data.nodes.length; i++){
+						if (data.nodes[i].Name === '<%= title %>')
+							avg = parseInt(data.nodes[i].ResponseTime, 10); //don't forget to add the badbtypese
+					}
+			<% } %>
+					gauge.refresh(avg);
 			});
 			<% if (title != "Internet"){ %>
 			socket.on('database status', function(data) {
