@@ -32,11 +32,11 @@ module.exports = function(server){
 	var AllClients = {};
 	var online_count = 0;
 	var db_status = {};
-	var internet_rt = 0;
+	var internet_rt = {};
 	var db2_rt = {};
 	var oracle_rt = {};
 	var td_rt = {};
-	
+
 	io.sockets.on('connection', function(socket) {
 		// create a redis connection
 		try
@@ -48,7 +48,7 @@ module.exports = function(server){
 			console.log( "ERROR => Cannot connect to Redis message broker: URL => " + config.redis_url + "; Port => " + config.redis_port );
 			console.log(err);
 		}
-	
+
 		if (socket.id in AllClients ){ // if user is in usersObj, save it's new socket.id
 			AllClients[socket.id].push(socket);
 		} else { // if user is not in usersObj, make a new object and save it's socket.
@@ -80,10 +80,10 @@ module.exports = function(server){
 				case 'Teradata':
 					td_rt = JSON.parse(message);
 					break;
-			}	
+			}
 			//log('msg', "received from channel #" + channel + " : " + message);
 		});
-		
+
 		io.sockets.in('online count').emit('online count', online_count);
 		AllClients[socket.id].emit('online count', online_count);
 		AllClients[socket.id].emit('Internet', internet_rt);
@@ -91,7 +91,7 @@ module.exports = function(server){
 		AllClients[socket.id].emit('DB2', db2_rt);
 		AllClients[socket.id].emit('Oracle', oracle_rt);
 		AllClients[socket.id].emit('Teradata', td_rt);
-		
+
 		socket.on('disconnect', function() {
 			subscribe.quit();
 			console.log(socket.id + ' got disconnect!');
@@ -103,5 +103,3 @@ module.exports = function(server){
 	});
 
 };
-
-

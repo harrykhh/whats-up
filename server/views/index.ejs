@@ -91,7 +91,7 @@
 										<span id="internet_rt">0</span>
 									</h3>
 									<p>
-										Google Response Time (ms)
+										Internet Response Time (ms)
 									</p>
 								</div>
 								<div class="icon">
@@ -103,12 +103,17 @@
 							</div>
 						</div><!-- ./col -->
 					</div><!-- /.row -->
+					<div class="row">
+						<div class="col-lg-12">
+
+						</div>
+					</div>
 				</section><!-- /.content -->
 			</aside><!-- /.right-side -->
 		</div><!-- ./wrapper -->
-		
+
 		<% include partials/footer.ejs %>
-		<% include partials/jsdefaults.ejs %> 
+		<% include partials/jsdefaults.ejs %>
 		<script src='/bower_components/socket.io-client/socket.io.js'></script>
 		<script src='/js/socket.js'></script>
 		<script type="text/javascript">
@@ -120,7 +125,12 @@
 				$('#online_users').html(data);
 			});
 			socket.on('Internet', function(data) {
-				$('#internet_rt').html(data);
+				var sum = 0;
+				for(var i = 0; i < data.nodes.length; i++){
+					sum += parseInt(data.nodes[i].ResponseTime, 10); //don't forget to add the base
+				}
+				var avg = sum/data.nodes.length;
+				$('#internet_rt').html(avg);
 			});
 		</script>
 	</body>

@@ -19,7 +19,7 @@ Live data updates are pushed via Redis's pubsub and socket.io
 
 1. Live graph updates with [socket.io](http://socket.io/)
 
-[![Live graph update](http://img.youtube.com/vi/Uc9aNiXWZDo/0.jpg)](http://www.youtube.com/watch?v=Uc9aNiXWZDo)
+[![Live graph update](http://img.youtube.com/vi/JhCOD53WNPo/0.jpg)](https://www.youtube.com/watch?v=JhCOD53WNPo)
 
 2. Integrated with [passport](http://passportjs.org/)
 

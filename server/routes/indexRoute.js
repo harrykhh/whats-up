@@ -19,6 +19,7 @@ module.exports = function(app){
 				log.distinct("id", { Tag: {'$ne': "Internet" } }, function(error, results){
 					if (error) return handleError(error);
 					param.dbNodeCount = results.length;
+					param.dbNode = results;
 					done();
 				});
 			},
@@ -27,6 +28,7 @@ module.exports = function(app){
 				log.distinct("Tag", { Tag: {'$ne': "Internet" } }, function(error, results){
 					if (error) return handleError(error);
 					param.dbTypeCount = results.length;
+					param.dbType = results;
 					done();
 				});
 			}

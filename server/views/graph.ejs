@@ -153,14 +153,18 @@
 
 			window.addEventListener('resize', resize);
 			resize();
-
-			$("#" + "<%= title %>".toLowerCase()).parent().attr('class', 'treeview active');
-			$("#" + "<%= title %>".toLowerCase()).parent().parent().parent().attr('class', 'treeview active');
+			<% if (typeof dbtype != "undefined"){ %>
+				$("#" + "<%= dbtype %>".toLowerCase()).parent().attr('class', 'treeview active');
+				$("#" + "<%= dbtype %>".toLowerCase()).parent().parent().parent().attr('class', 'treeview active');
+			<% } else { %>
+				$("#" + "<%= title %>".toLowerCase()).parent().attr('class', 'treeview active');
+				$("#" + "<%= title %>".toLowerCase()).parent().parent().parent().attr('class', 'treeview active');
+			<% } %>
 			var gauge = new JustGage({
 				id: "gauge",
 				value: 0,
 				min: 0,
-				max: 600,
+				max: 2000,
 				title: "Response Time",
 				label: "ms"
 			});
@@ -222,7 +226,7 @@
 				socket.on('<%= title %>', function(data) {
 			<% } %>
 				updategraph();
-			<% if (title === "Internet"){ %>
+
 				if (typeof data != "undefined"){
 					$('#check').attr('class', 'fa fa-check-circle');
 					$('#check').css('color', '#00a65a');
@@ -233,14 +237,12 @@
 					$('#check').css('color', '#f56954');
 					$('.box-warning').attr('class', 'box box-danger');
 				}
-				var avg = data;
-			<% } else { %>
 					var sum = 0;
 					for(var i = 0; i < data.nodes.length; i++){
 						sum += parseInt(data.nodes[i].ResponseTime, 10); //don't forget to add the base
 					}
 					var avg = sum/data.nodes.length;
-			<% } %>
+
 			<% if (typeof dbtype != "undefined"){ %>
 					for(var i = 0; i < data.nodes.length; i++){
 						if (data.nodes[i].Name === '<%= title %>')
@@ -252,9 +254,9 @@
 			<% if (title != "Internet"){ %>
 			socket.on('database status', function(data) {
 			<%if (typeof dbtype != "undefined"){ %>
-				if (data.<%= dbtype %> === "0"){
+				if (data.<%= dbtype %> === 1){
 			<% } else { %>
-				if (data.<%= title %> === "0"){
+				if (data.<%= title %> === 1){
 			<% } %>
 					$('#check').attr('class', 'fa fa-check-circle');
 					$('#check').css('color', '#00a65a');

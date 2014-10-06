@@ -1,5 +1,5 @@
 {
-	"version" : "0.0.1a",
+	"version" : "0.0.2",
 	"redis_port" : "6379",
 	"redis_url" : "localhost",
 	"mongodb_url" : "mongodb://localhost/stats",

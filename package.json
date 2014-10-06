@@ -1,6 +1,6 @@
 {
   "name": "whats-up",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A web app that checks if a website or DB is up or not",
   "main": "app.js",
   "scripts": {

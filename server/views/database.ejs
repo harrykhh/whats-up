@@ -78,7 +78,7 @@
 				id: "gauge",
 				value: 0,
 				min: 0,
-				max: 600,
+				max: 2000,
 				title: "Response Time",
 				label: "ms"
 			});
@@ -90,7 +90,7 @@
 				socket.emit('join room', '<%= title %>');
 			});
 			socket.on('database status', function(data) {
-				if (data.<%= title %> === "0"){
+				if (data.<%= title %> === 1){
 					$('#check').attr('class', 'fa fa-check-circle');
 					$('#check').css('color', '#00a65a');
 					$('.box-warning').attr('class', 'box box-success');
