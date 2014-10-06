@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Whats-up : The UI of the application used display database, application and internet statuses">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Whats-up</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/harrykhh/whats-up">View on GitHub</a>
+
+          <h1 id="project_title">Whats-up</h1>
+          <h2 id="project_tagline">The UI of the application used display database, application and internet statuses</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/harrykhh/whats-up/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/harrykhh/whats-up/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h2>
+<a name="whats-up" class="anchor" href="#whats-up"><span class="octicon octicon-link"></span></a>Whats Up</h2>
+
+<p>The UI of the application used display database, application and internet statuses</p>
+
+<p>Recording data into MongoDb to generate historic response time D3 graphs</p>
+
+<p>Live data updates are pushed via Redis's pubsub and socket.io</p>
+
+<h2>
+<a name="design-diagram" class="anchor" href="#design-diagram"><span class="octicon octicon-link"></span></a>Design Diagram</h2>
+
+<p><img src="https://github.com/harrykhh/whats-up/raw/master/images/diagram.png" alt="Diagram"></p>
+
+<h2>
+<a name="software-requirements" class="anchor" href="#software-requirements"><span class="octicon octicon-link"></span></a>Software Requirements</h2>
+
+<ol>
+<li><a href="http://nodejs.org">Node</a></li>
+<li><a href="http://bower.io">Bower</a></li>
+<li><a href="http://www.mongodb.org/">MongoDB</a></li>
+<li><a href="http://redis.io/">Redis</a></li>
+</ol><h2>
+<a name="features" class="anchor" href="#features"><span class="octicon octicon-link"></span></a>Features</h2>
+
+<ol>
+<li>Live graph updates with <a href="http://socket.io/">socket.io</a>
+</li>
+</ol><p><a href="https://www.youtube.com/watch?v=JhCOD53WNPo"><img src="http://img.youtube.com/vi/JhCOD53WNPo/0.jpg" alt="Live graph update"></a></p>
+
+<ol>
+<li>Integrated with <a href="http://passportjs.org/">passport</a>
+</li>
+</ol><p><img src="https://github.com/harrykhh/whats-up/raw/master/images/1.png" alt="Homescreen"></p>
+
+<h2>
+<a name="install" class="anchor" href="#install"><span class="octicon octicon-link"></span></a>Install</h2>
+
+<ol>
+<li>Clone the repo: <code>git clone https://github.com/harrykhh/whats-up.git</code>.</li>
+<li>Install with <a href="http://nodejs.org">Node</a>: <code>npm update</code>.</li>
+<li>Install with <a href="http://bower.io">Bower</a>: <code>bower update</code>.</li>
+</ol><h2>
+<a name="settings" class="anchor" href="#settings"><span class="octicon octicon-link"></span></a>Settings</h2>
+
+<p>Config file located at : <code>server/config/config.json</code></p>
+
+<ol>
+<li>Redis port(default 6379) <code>"redis_port" : "6379"</code>
+</li>
+<li>Redis URL(default localhost) <code>"redis_url" : "localhost"</code>
+</li>
+<li>MongoDb URL(default mongodb://localhost:27017/stats) <code>"mongodb_url" : "mongodb://localhost:27017/stats"</code>
+</li>
+<li>MongoDb User(default mongouser) <code>"mongodb_user" : "mongouser"</code>
+</li>
+<li>MongoDb Password(default password) <code>"mongodb_password" : "password",</code>
+</li>
+<li>LDAP Passport Config (optional)</li>
+</ol><pre><code>
+    "LDAPPassportConfig" : {
+
+        "server" : {
+
+            "url": "LDAP://localhost",
+
+            "adminDn": "network\\admin",
+
+            "adminPassword" : "password",
+
+            "searchBase" : "CN=Users,DC=NETWORK,DC=com",
+
+            "searchFilter" : "(sAMAccountName={{username}})"
+
+        }
+
+    }
+</code></pre>
+
+<h2>
+<a name="author" class="anchor" href="#author"><span class="octicon octicon-link"></span></a>Author</h2>
+
+<p><strong>Harry Ho</strong></p>
+
+<ul>
+<li><a href="https://github.com/harrykhh">https://github.com/harrykhh</a></li>
+<li><a href="http://www.linkedin.com/pub/harry-ho/43/15a/5a3">http://www.linkedin.com/pub/harry-ho/43/15a/5a3</a></li>
+</ul><h2>
+<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h2>
+
+<p>The MIT License (MIT)</p>
+
+<p>Copyright (c) [2014] [Harry Ho]</p>
+
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Whats-up maintained by <a href="https://github.com/harrykhh">harrykhh</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
