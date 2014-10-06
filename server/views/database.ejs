@@ -102,6 +102,9 @@
 				}
 			});
 			socket.on('<%= title %>', function(data) {
+				if (typeof data.nodes == "undefined"){
+					return;
+				}
 				var sum = 0;
 				for(var i = 0; i < data.nodes.length; i++){
 					sum += parseInt(data.nodes[i].ResponseTime, 10); //don't forget to add the base
