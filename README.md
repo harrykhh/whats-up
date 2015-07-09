@@ -30,6 +30,8 @@ Live data updates are pushed via Redis's pubsub and socket.io
 1. Clone the repo: `git clone https://github.com/harrykhh/whats-up.git`.
 2. Install with [Node](http://nodejs.org): `npm update`.
 3. Install with [Bower](http://bower.io): `bower update`.
+4. Config [MongoDB](http://www.mongodb.org/) and [Redis](http://redis.io/) connections in `server/config/config.json`.
+5. Run with [Node](http://nodejs.org): `node app`.
 
 ##Settings
 
